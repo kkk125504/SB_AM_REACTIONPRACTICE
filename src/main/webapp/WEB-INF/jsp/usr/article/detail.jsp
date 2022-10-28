@@ -25,10 +25,73 @@
 			}, 'json');			
 		}
 		
+		function goodReactionPoint() {
+			if(${rq.isLogined()==false}){
+				alert('로그인 후 이용 가능합니다.');
+				return;
+			}						
+			$.get('../reactionPoint/doGoodReaction', {
+				relId : params.id,
+				relTypeCode : 'article',
+				ajaxMode : 'Y'
+			}, function(data) {
+				if(data.fail){
+					alert(data.msg);
+					return;					
+				}
+				if(data.resultCode=='S-2'){
+					$('.good').addClass('btn-outline');
+				}
+				
+				if(data.resultCode=='S-1'){
+					$('.good').removeClass('btn-outline');
+				}
+				
+				$('.good').empty().html('좋아요 👍 : '+data.data1);	
+				
+			}, 'json');		
+		}
+		function badReactionPoint() {
+			if(${rq.isLogined()==false}){
+				alert('로그인 후 이용 가능합니다.');
+				return;
+			}						
+			$.get('../reactionPoint/doBadReaction', {
+				relId : params.id,
+				relTypeCode : 'article',
+				ajaxMode : 'Y'
+			}, function(data) {
+				if(data.fail){
+					alert(data.msg);
+					return;					
+				}
+				if(data.resultCode=='S-2'){
+					$('.bad').addClass('btn-outline');
+				}
+				
+				if(data.resultCode=='S-1'){
+					$('.bad').removeClass('btn-outline');
+				}
+				
+				$('.bad').empty().html('싫어요 👎 : '+data.data1);	
+				
+			}, 'json');		
+		}
+		
+		
+		function selectedReactionPoint() {
+			if(${isSelectedGoodReactionPoint}){ 
+				$('.good').removeClass('btn-outline');
+			}
+			if(${isSelectedBadReactionPoint}){ 
+				$('.bad').removeClass('btn-outline');
+			}
+		}
 		$(function() {
 			// 실전코드
 			//ArticleDetail__increaseHitCount();
 			// 연습코드
+			selectedReactionPoint();
 			setTimeout(ArticleDetail__increaseHitCount, 2000);
 		})
 	</script>
@@ -67,14 +130,11 @@
 						</tr>
 						<tr>
 							<td class="bg-gray-200">추천 수</td>
-							<td>
-								<span class="btn btn-active btn-sm">${article.goodReactionPoint }</span>
-							<c:if test="${actorCanMakeReaction}">
+							<td>						
 								<span>&nbsp;</span>
-									<a href="/usr/reactionPoint/doGoodReaction?relTypeCode=article&relId=${param.id}&replaceUri=${rq.encodedCurrentUri}" class="btn btn-outline btn-xs">좋아요 👍</a>
+									<button onclick="goodReactionPoint()" class="btn btn-outline btn-xs good">좋아요 👍 : ${article.goodReactionPoint}</button>
 								<span>&nbsp;</span>
-									<a href="/usr/reactionPoint/doBadReaction?relTypeCode=article&relId=${param.id}&replaceUri=${rq.encodedCurrentUri}" class="btn btn-outline btn-xs">싫어요 👎</a>
-							</c:if>
+									<button onclick="badReactionPoint()" class="btn btn-outline btn-xs bad">싫어요 👎 : ${article.badReactionPoint}</button>				
 							</td>						
 						</tr>
 					</tbody>								

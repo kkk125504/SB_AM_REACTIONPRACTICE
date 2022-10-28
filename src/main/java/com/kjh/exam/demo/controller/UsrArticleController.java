@@ -35,9 +35,13 @@ public class UsrArticleController {
 			
 		Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
 		boolean actorCanMakeReaction = reactionPointService.actorCanMakeReaction(rq.getLoginedMemberId(),"article", id);
-
+		
+		boolean isSelectedGoodReactionPoint = reactionPointService.isSelectedGoodReactionPoint(rq.getLoginedMemberId(),"article",id);
+		boolean isSelectedBadReactionPoint = reactionPointService.isSelectedBadReactionPoint(rq.getLoginedMemberId(),"article",id);
 		model.addAttribute("actorCanMakeReaction", actorCanMakeReaction);
 		model.addAttribute("article", article);
+		model.addAttribute("isSelectedGoodReactionPoint", isSelectedGoodReactionPoint);
+		model.addAttribute("isSelectedBadReactionPoint", isSelectedBadReactionPoint);
 		return "usr/article/detail";
 	}
 

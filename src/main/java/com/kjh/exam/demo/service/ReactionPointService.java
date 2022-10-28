@@ -23,24 +23,59 @@ public class ReactionPointService {
 	}
 
 	public ResultData addGoodReactionPoint(int actorId, String relTypeCode, int relId) {
-		reactionPointRepository.addGoodReactionPoint(actorId,relTypeCode,relId);
-			
+		reactionPointRepository.addGoodReactionPoint(actorId, relTypeCode, relId);
+
 		switch (relTypeCode) {
-			case "article":
+		case "article":
 			articleService.increaseGoodReactionPoint(relId);
 			break;
 		}
-		return ResultData.from("S-1", "좋아요 처리 되었습니다");
+		int goodReactionPoint = articleService.getGoodReactionPoint(relId);
+		return ResultData.from("S-1", "좋아요 증가 되었습니다", "goodReactionPoint", goodReactionPoint);
 	}
 
 	public ResultData addBadReactionPoint(int actorId, String relTypeCode, int relId) {
-		reactionPointRepository.addBadReactionPoint(actorId,relTypeCode,relId);
+		reactionPointRepository.addBadReactionPoint(actorId, relTypeCode, relId);
 		switch (relTypeCode) {
 		case "article":
-		articleService.increaseBadReactionPoint(relId);
-		break;
+			articleService.increaseBadReactionPoint(relId);
+			break;
+		}
+		int badReactionPoint = articleService.getBadReactionPoint(relId);
+		return ResultData.from("S-1", "싫어요 증가 되었습니다","badReactionPoint",badReactionPoint);
 	}
-		articleService.increaseBadReactionPoint(relId);
-		return ResultData.from("F-1", "싫어요 처리 되었습니다");
+
+	public boolean isSelectedGoodReactionPoint(int actorId, String relTypeCode, int relId) {
+		return reactionPointRepository.isSelectedGoodReactionPoint(actorId, relTypeCode, relId);
+
+	}
+
+	public boolean isSelectedBadReactionPoint(int actorId, String relTypeCode, int relId) {
+		return reactionPointRepository.isSelectedBadReactionPoint(actorId, relTypeCode, relId);
+
+	}
+
+	public ResultData removeGoodReationPoint(int actorId, String relTypeCode, int relId) {
+		reactionPointRepository.removeReactionPoint(actorId, relTypeCode, relId);
+
+		switch (relTypeCode) {
+		case "article":
+			articleService.decreaseGoodReactionPoint(relId);
+			break;
+		}
+		int goodReactionPoint = articleService.getGoodReactionPoint(relId);
+		return ResultData.from("S-1", "좋아요 감소 되었습니다", "goodReactionPoint", goodReactionPoint);
+	}
+
+	public ResultData removeBadReactionPoint(int actorId, String relTypeCode, int relId) {
+		reactionPointRepository.removeReactionPoint(actorId, relTypeCode, relId);
+
+		switch (relTypeCode) {
+		case "article":
+			articleService.decreaseBadReactionPoint(relId);
+			break;
+		}
+		int badReactionPoint = articleService.getBadReactionPoint(relId);
+		return ResultData.from("S-1", "싫어요 감소 되었습니다.", "badReactionPoint", badReactionPoint);
 	}
 }
