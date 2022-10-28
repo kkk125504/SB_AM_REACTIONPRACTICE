@@ -139,18 +139,30 @@
 						</tr>
 					</tbody>								
 				</table>
+			</div>
 				
-				<div class= "btns flex justify-end">					
-					<c:if test= "${article.extra__actorCanDelete}" >					
-						<a class ="mx-4 btn-text-link btn btn-active btn-ghost" href="modify?id=${article.id }">수정</a>				
-					</c:if>	
+			<div class= "btns flex justify-end">					
+				<c:if test= "${article.extra__actorCanDelete}" >					
+					<a class ="mx-4 btn-text-link btn btn-active btn-ghost" href="modify?id=${article.id }">수정</a>				
+				</c:if>	
+				
+				<c:if test= "${article.extra__actorCanDelete}" >
+					<a class ="btn-text-link btn btn-active btn-ghost" onclick="if(confirm('삭제하시겠습니까?') == false) return false;" href="doDelete?id=${article.id }">삭제</a>								
+				</c:if>
+<!-- 				뒤로가기버튼			
+					<button class ="btn-text-link btn btn-active btn-ghost mx-4" type="button" onclick="history.back()">뒤로가기</button> -->				
+			</div>
+			<div class="replies-box w-full flex">
+				<span>댓글!</span>
+				<div class="replies ">
 					
-					<c:if test= "${article.extra__actorCanDelete}" >
-						<a class ="btn-text-link btn btn-active btn-ghost" onclick="if(confirm('삭제하시겠습니까?') == false) return false;" href="doDelete?id=${article.id }">삭제</a>								
-					</c:if>			
-					<button class ="btn-text-link btn btn-active btn-ghost mx-4" type="button" onclick="history.back()">뒤로가기</button>
 				</div>
 			</div>
+			<div class="addReply">
+				<c:if test="${rq.isLogined()}">
+					<textarea name="reply" id="" cols="50" rows="5" class="textarea textarea-bordered" placeholder="댓글을 남겨보세요."></textarea>
+				</c:if>
+			</div>		
 		</div>
 	</section>
 <%@ include file="../common/foot.jspf" %>

@@ -220,7 +220,17 @@ ON A.id = RP_SUM.relId
 SET A.goodReactionPoint = RP_SUM.goodReactionPoint,
 A.badReactionPoint = RP_SUM.badReactionPoint;
 
-
+# reply 테이블
+CREATE TABLE reply (
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    updateDate DATETIME NOT NULL,
+    memberId INT(10) UNSIGNED NOT NULL,
+    relTypeCode CHAR(50) NOT NULL COMMENT '관련 데이터 타입 코드',
+	relId INT(10) UNSIGNED NOT NULL COMMENT '관련 데이터  번호',
+	`comment` VARCHAR(100) NOT NULL
+	class TINYINT NOT NULL COMMENT '댓글 대댓글 계층 번호'
+);
 #######################################################
 
 /*
