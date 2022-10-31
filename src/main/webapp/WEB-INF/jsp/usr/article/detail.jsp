@@ -77,8 +77,7 @@
 				
 			}, 'json');		
 		}
-		
-		
+				
 		function selectedReactionPoint() {
 			if(${isSelectedGoodReactionPoint}){ 
 				$('.good').removeClass('btn-outline');
@@ -87,6 +86,7 @@
 				$('.bad').removeClass('btn-outline');
 			}
 		}
+			    		 
 		$(function() {
 			// 실전코드
 			//ArticleDetail__increaseHitCount();
@@ -137,6 +137,7 @@
 									<button onclick="badReactionPoint()" class="btn btn-outline btn-xs bad">싫어요 👎 : ${article.badReactionPoint}</button>				
 							</td>						
 						</tr>
+						
 					</tbody>								
 				</table>
 			</div>
@@ -149,20 +150,29 @@
 				<c:if test= "${article.extra__actorCanDelete}" >
 					<a class ="btn-text-link btn btn-active btn-ghost" onclick="if(confirm('삭제하시겠습니까?') == false) return false;" href="doDelete?id=${article.id }">삭제</a>								
 				</c:if>
-<!-- 				뒤로가기버튼			
-					<button class ="btn-text-link btn btn-active btn-ghost mx-4" type="button" onclick="history.back()">뒤로가기</button> -->				
 			</div>
-			<div class="replies-box w-full flex">
-				<span>댓글!</span>
-				<div class="replies ">
-					
+		</div>
+		<div class="container mx-auto px-3">
+			<c:forEach var="reply" items="${replies}">
+				<div class="w-full mt-8">
+					<div class="replyBox">
+						<div><span>${reply.extra__replyWriter }</span></div>
+	  					<div class="bg-base-300 rounded-box "><span class="mx-8">${reply.body }</span></div>
+		  					<c:if test="${rq.loginedMemberId == reply.memberId }">
+			  					<button class="bg-red-500" onclick="add_textbox()">수정</button>
+			  					<button class="bg-red-500">삭제</button>
+		  					</c:if> 	  				
+	  					<div class="divider"></div>  	
+  					</div>			
 				</div>
+			</c:forEach>
+			<div class="replyWrite">
+				<div><span>${rq.loginedMember.nickname}</span></div>
+				<form class="" method="post" action="../reply/addReply?relId=${param.id }&relTypeCode=reply">
+					<textarea class="bg-base-300 rounded-box w-full h-20" name="body" placeholder="댓글을 작성해주세요."></textarea>
+					<button type="submit">댓글달기</button>
+				</form>
 			</div>
-			<div class="addReply">
-				<c:if test="${rq.isLogined()}">
-					<textarea name="reply" id="" cols="50" rows="5" class="textarea textarea-bordered" placeholder="댓글을 남겨보세요."></textarea>
-				</c:if>
-			</div>		
 		</div>
 	</section>
 <%@ include file="../common/foot.jspf" %>
